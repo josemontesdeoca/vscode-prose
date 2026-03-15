@@ -1,0 +1,46 @@
+{
+  "name": "openprose",
+  "displayName": "OpenProse",
+  "description": "Syntax highlighting for the OpenProse programming language (.prose files)",
+  "version": "0.1.0",
+  "publisher": "openprose",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openprose/vscode-prose"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "prose",
+        "aliases": [
+          "OpenProse",
+          "prose"
+        ],
+        "extensions": [
+          ".prose"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "prose",
+        "scopeName": "source.prose",
+        "path": "./syntaxes/prose.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "prose",
+        "path": "./snippets/prose.json"
+      }
+    ]
+  }
+}
