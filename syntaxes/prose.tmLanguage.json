@@ -1,0 +1,272 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "OpenProse",
+  "scopeName": "source.prose",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#agent-block" },
+    { "include": "#block-definition" },
+    { "include": "#string-triple" },
+    { "include": "#string-double" },
+    { "include": "#discretion-multiline" },
+    { "include": "#discretion-inline" },
+    { "include": "#variable-declaration" },
+    { "include": "#io-declaration" },
+    { "include": "#import-statement" },
+    { "include": "#session-block" },
+    { "include": "#loop-until" },
+    { "include": "#parallel-for" },
+    { "include": "#control-keywords" },
+    { "include": "#pipeline-operator" },
+    { "include": "#arrow-operator" },
+    { "include": "#model-constants" },
+    { "include": "#boolean-constants" },
+    { "include": "#permission-constants" },
+    { "include": "#numbers" },
+    { "include": "#array-literal" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.number-sign.prose",
+      "match": "#.*$"
+    },
+
+    "string-triple": {
+      "name": "string.quoted.triple.prose",
+      "begin": "\"\"\"",
+      "end": "\"\"\"",
+      "patterns": [
+        { "include": "#string-interpolation" },
+        { "include": "#escape-sequence" }
+      ]
+    },
+
+    "string-double": {
+      "name": "string.quoted.double.prose",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "include": "#string-interpolation" },
+        { "include": "#escape-sequence" }
+      ]
+    },
+
+    "string-interpolation": {
+      "begin": "(\\{)",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.section.interpolation.begin.prose" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.section.interpolation.end.prose" }
+      },
+      "patterns": [
+        {
+          "name": "variable.other.interpolation.prose",
+          "match": "[\\w][\\w-]*"
+        }
+      ]
+    },
+
+    "escape-sequence": {
+      "name": "constant.character.escape.prose",
+      "match": "\\\\[nrt\\\\\"']"
+    },
+
+    "discretion-multiline": {
+      "name": "markup.bold.discretion.prose",
+      "begin": "\\*\\*\\*",
+      "end": "\\*\\*\\*"
+    },
+
+    "discretion-inline": {
+      "name": "markup.bold.discretion.prose",
+      "begin": "\\*\\*",
+      "end": "\\*\\*"
+    },
+
+    "agent-block": {
+      "begin": "^(\\s*)(agent)\\s+([\\w][\\w-]*)\\s*(:)",
+      "beginCaptures": {
+        "2": { "name": "keyword.declaration.agent.prose" },
+        "3": { "name": "entity.name.type.agent.prose" },
+        "4": { "name": "punctuation.separator.colon.prose" }
+      },
+      "end": "^(?!\\1\\s+|\\s*$|\\s*#)",
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#agent-properties" },
+        { "include": "#permissions-block" },
+        { "include": "#string-triple" },
+        { "include": "#string-double" },
+        { "include": "#model-constants" },
+        { "include": "#boolean-constants" },
+        { "include": "#permission-constants" },
+        { "include": "#numbers" },
+        { "include": "#array-literal" }
+      ]
+    },
+
+    "agent-properties": {
+      "match": "^\\s+(model|prompt|skills|persist|context)\\s*(:)",
+      "captures": {
+        "1": { "name": "support.type.property-name.prose" },
+        "2": { "name": "punctuation.separator.colon.prose" }
+      }
+    },
+
+    "permissions-block": {
+      "begin": "^(\\s+)(permissions)\\s*(:)",
+      "beginCaptures": {
+        "2": { "name": "support.type.property-name.prose" },
+        "3": { "name": "punctuation.separator.colon.prose" }
+      },
+      "end": "^(?!\\1\\s+|\\s*$|\\s*#)",
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#permission-properties" },
+        { "include": "#string-double" },
+        { "include": "#permission-constants" },
+        { "include": "#array-literal" }
+      ]
+    },
+
+    "permission-properties": {
+      "match": "^\\s+(read|write|bash|network)\\s*(:)",
+      "captures": {
+        "1": { "name": "support.type.property-name.prose" },
+        "2": { "name": "punctuation.separator.colon.prose" }
+      }
+    },
+
+    "session-block": {
+      "begin": "\\b(session)\\s*(:)\\s*([\\w][\\w-]*)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.session.prose" },
+        "2": { "name": "punctuation.separator.colon.prose" },
+        "3": { "name": "variable.other.agent-ref.prose" }
+      },
+      "end": "^(?!\\s+(prompt|context|retry|backoff)\\s*:|\\s*$|\\s*#)",
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#session-properties" },
+        { "include": "#string-triple" },
+        { "include": "#string-double" },
+        { "include": "#numbers" },
+        { "include": "#array-literal" }
+      ]
+    },
+
+    "session-properties": {
+      "match": "^\\s+(prompt|context|retry|backoff)\\s*(:)",
+      "captures": {
+        "1": { "name": "support.type.property-name.prose" },
+        "2": { "name": "punctuation.separator.colon.prose" }
+      }
+    },
+
+    "block-definition": {
+      "match": "^\\s*(block)\\s+([\\w][\\w-]*)\\s*(\\(.*?\\))?\\s*(:)",
+      "captures": {
+        "1": { "name": "keyword.declaration.block.prose" },
+        "2": { "name": "entity.name.function.block.prose" },
+        "3": { "name": "meta.parameters.prose" },
+        "4": { "name": "punctuation.separator.colon.prose" }
+      }
+    },
+
+    "variable-declaration": {
+      "match": "^\\s*(let|const)\\s+([\\w][\\w-]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.variable.prose" },
+        "2": { "name": "variable.other.prose" }
+      }
+    },
+
+    "io-declaration": {
+      "match": "^\\s*(input|output)\\s+([\\w][\\w-]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.io.prose" },
+        "2": { "name": "variable.other.prose" }
+      }
+    },
+
+    "import-statement": {
+      "match": "^\\s*(use)\\s+(\"[^\"]*\")",
+      "captures": {
+        "1": { "name": "keyword.control.import.prose" },
+        "2": { "name": "string.quoted.double.prose" }
+      }
+    },
+
+    "loop-until": {
+      "match": "^\\s*(loop)\\s+(until|while)\\b",
+      "captures": {
+        "1": { "name": "keyword.control.loop.prose" },
+        "2": { "name": "keyword.control.loop.prose" }
+      }
+    },
+
+    "parallel-for": {
+      "match": "^\\s*(parallel)\\s+(for)\\b",
+      "captures": {
+        "1": { "name": "keyword.control.parallel.prose" },
+        "2": { "name": "keyword.control.loop.prose" }
+      }
+    },
+
+    "control-keywords": {
+      "match": "\\b(session|parallel|try|catch|finally|if|elif|else|choice|option|for|repeat|loop|do|throw|resume|in|until|while|as)\\b",
+      "name": "keyword.control.prose"
+    },
+
+    "pipeline-operator": {
+      "match": "(\\|)\\s*(map|filter|reduce|pmap)\\b",
+      "captures": {
+        "1": { "name": "keyword.operator.pipe.prose" },
+        "2": { "name": "support.function.pipeline.prose" }
+      }
+    },
+
+    "arrow-operator": {
+      "name": "keyword.operator.arrow.prose",
+      "match": "->"
+    },
+
+    "model-constants": {
+      "name": "constant.language.model.prose",
+      "match": "\\b(sonnet|opus|haiku)\\b"
+    },
+
+    "boolean-constants": {
+      "name": "constant.language.boolean.prose",
+      "match": "\\b(true|false)\\b"
+    },
+
+    "permission-constants": {
+      "name": "constant.language.permission.prose",
+      "match": "\\b(deny|allow|prompt)\\b"
+    },
+
+    "numbers": {
+      "name": "constant.numeric.prose",
+      "match": "\\b\\d+\\b"
+    },
+
+    "array-literal": {
+      "begin": "\\[",
+      "end": "\\]",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.array.begin.prose" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.array.end.prose" }
+      },
+      "patterns": [
+        { "include": "#string-double" },
+        { "include": "#numbers" },
+        { "include": "#boolean-constants" }
+      ]
+    }
+  }
+}
