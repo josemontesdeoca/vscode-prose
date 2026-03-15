@@ -1,0 +1,178 @@
+{
+  "Agent Definition": {
+    "prefix": "agent",
+    "body": [
+      "agent ${1:name}:",
+      "  model: ${2|sonnet,opus,haiku|}",
+      "  prompt: \"${3:You are a helpful assistant}\"",
+      "  skills: [\"${4:skill}\"]"
+    ],
+    "description": "Define an agent with model, prompt, and skills"
+  },
+  "Session": {
+    "prefix": "session",
+    "body": [
+      "session \"${1:prompt}\""
+    ],
+    "description": "Session with a prompt string"
+  },
+  "Session with Agent": {
+    "prefix": "session-agent",
+    "body": [
+      "session: ${1:agent_name}",
+      "  prompt: \"${2:prompt}\""
+    ],
+    "description": "Session targeting a specific agent"
+  },
+  "Parallel Block": {
+    "prefix": "parallel",
+    "body": [
+      "parallel:",
+      "  ${1:result1} = session \"${2:task 1}\"",
+      "  ${3:result2} = session \"${4:task 2}\""
+    ],
+    "description": "Execute sessions in parallel"
+  },
+  "Try Catch": {
+    "prefix": "try",
+    "body": [
+      "try:",
+      "  session \"${1:risky operation}\"",
+      "catch as ${2:err}:",
+      "  session \"${3:handle error}\""
+    ],
+    "description": "Try/catch error handling block"
+  },
+  "Try Catch Finally": {
+    "prefix": "try-finally",
+    "body": [
+      "try:",
+      "  session \"${1:risky operation}\"",
+      "catch as ${2:err}:",
+      "  session \"${3:handle error}\"",
+      "finally:",
+      "  session \"${4:cleanup}\""
+    ],
+    "description": "Try/catch/finally error handling block"
+  },
+  "If Conditional": {
+    "prefix": "if",
+    "body": [
+      "if **${1:condition}**:",
+      "  session \"${2:action}\""
+    ],
+    "description": "Conditional with AI discretion"
+  },
+  "If Else": {
+    "prefix": "if-else",
+    "body": [
+      "if **${1:condition}**:",
+      "  session \"${2:action}\"",
+      "else:",
+      "  session \"${3:alternative}\""
+    ],
+    "description": "If/else conditional block"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for ${1:item} in ${2:items}:",
+      "  session \"${3:process {$1}}\""
+    ],
+    "description": "For each loop"
+  },
+  "Repeat": {
+    "prefix": "repeat",
+    "body": [
+      "repeat ${1:3}:",
+      "  session \"${2:action}\""
+    ],
+    "description": "Repeat N times"
+  },
+  "Loop Until": {
+    "prefix": "loop",
+    "body": [
+      "loop until **${1:condition}** (max: ${2:10}):",
+      "  session \"${3:action}\""
+    ],
+    "description": "Loop until AI-judged condition is met"
+  },
+  "Block Definition": {
+    "prefix": "block",
+    "body": [
+      "block ${1:name}(${2:param}):",
+      "  session \"${3:Process {$2}}\""
+    ],
+    "description": "Reusable block definition"
+  },
+  "Choice Block": {
+    "prefix": "choice",
+    "body": [
+      "choice **${1:criteria}**:",
+      "  option \"${2:Option A}\":",
+      "    session \"${3:action A}\"",
+      "  option \"${4:Option B}\":",
+      "    session \"${5:action B}\""
+    ],
+    "description": "AI-selected choice block"
+  },
+  "Let Variable": {
+    "prefix": "let",
+    "body": [
+      "let ${1:name} = session \"${2:prompt}\""
+    ],
+    "description": "Variable binding from session result"
+  },
+  "Const Variable": {
+    "prefix": "const",
+    "body": [
+      "const ${1:name} = session \"${2:prompt}\""
+    ],
+    "description": "Constant binding from session result"
+  },
+  "Input Declaration": {
+    "prefix": "input",
+    "body": [
+      "input ${1:name}: \"${2:description}\""
+    ],
+    "description": "Declare a program input"
+  },
+  "Output Declaration": {
+    "prefix": "output",
+    "body": [
+      "output ${1:name} = ${2:expression}"
+    ],
+    "description": "Declare a program output"
+  },
+  "Use Import": {
+    "prefix": "use",
+    "body": [
+      "use \"@${1:handle}/${2:slug}\""
+    ],
+    "description": "Import an external program"
+  },
+  "Pipeline Map": {
+    "prefix": "pipe-map",
+    "body": [
+      "${1:items} | map:",
+      "  session \"${2:process each item}\""
+    ],
+    "description": "Pipeline map operation"
+  },
+  "Pipeline Filter": {
+    "prefix": "pipe-filter",
+    "body": [
+      "${1:items} | filter:",
+      "  session \"${2:keep items that match}\""
+    ],
+    "description": "Pipeline filter operation"
+  },
+  "Parallel For": {
+    "prefix": "parallel-for",
+    "body": [
+      "parallel for ${1:item} in ${2:items}:",
+      "  session \"${3:process {$1}}\""
+    ],
+    "description": "Parallel for each loop"
+  }
+}
